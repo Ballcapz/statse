@@ -1,15 +1,18 @@
 import Head from "next/head";
-import { Button, Container, Flex, Stack, Title } from "@mantine/core";
-import { SDropdown } from "../components/SDropdown";
-import { STextInput } from "../components/STextInput";
-import { SButtonMenu } from "../components/SButtonMenu";
-import { useState } from "react";
-import { SDrawer } from "../components/SDrawer";
+import { Button, Center, Container, Flex, Stack, Title } from "@mantine/core";
 import { SDataCollection } from "../components/SDataCollection";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return (
+      <Center>
+        <div>Loading...</div>
+      </Center>
+    );
+  }
 
   if (session) {
     return (

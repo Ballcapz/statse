@@ -3,6 +3,7 @@ import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import { NewDrillForm } from "./forms/NewDrillForm";
 import { NewPlayerForm } from "./forms/NewPlayerForm";
+import { NewSingleStatForm } from "./forms/NewSingleStatForm";
 import { NewStatForm } from "./forms/NewStatForm";
 import { SButtonMenu } from "./SButtonMenu";
 import { SDrawer } from "./SDrawer";
@@ -78,6 +79,7 @@ export function SDataCollection({ session }: { session: Session }) {
         <NewPlayerForm
           afterSubmitSuccess={(p) => {
             console.log({ p });
+            setPlayers((prev) => [...prev, p]);
             setNewPlayerOpen(false);
           }}
           session={session}
@@ -88,6 +90,7 @@ export function SDataCollection({ session }: { session: Session }) {
         <NewDrillForm
           afterSubmitSuccess={(d) => {
             console.log({ d });
+            setDrills((prev) => [...prev, d]);
             setNewDrillOpen(false);
           }}
           session={session}
@@ -106,7 +109,15 @@ export function SDataCollection({ session }: { session: Session }) {
         />
       </SDrawer>
       <SDrawer opened={newSingleStatOpen} setOpened={setNewSingleStatOpen}>
-        {/* <NewPlayerForm /> */}
+        <NewSingleStatForm
+          availableDrills={drills.map((drill) => drill.name)}
+          availablePlayers={players.map((player) => player.name)}
+          afterSubmitSuccess={(s) => {
+            console.log({ s });
+            setNewSingleStatOpen(false);
+          }}
+          session={session}
+        />
       </SDrawer>
     </>
   );

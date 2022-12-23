@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { unstable_getServerSession } from "next-auth/next";
 import { PrismaClient } from "@prisma/client";
-import { authOptions } from "./auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 const DUPLICATE_RECORD = "P2002";
 
@@ -21,10 +21,12 @@ export default async function handler(
     const body = JSON.parse(req.body);
 
     try {
-      const result = await prisma.player.create({
+      const result = await prisma.stat.create({
         data: {
-          name: body.name,
-          playerNumber: body.number,
+          singleMakes: body.singleMakes,
+          singleTakes: body.singleTakes,
+          drillName: body.drillName,
+          playerName: body.playerName,
           userId: session.user?.id,
         },
       });
@@ -36,20 +38,6 @@ export default async function handler(
       if (err.code === DUPLICATE_RECORD) {
         return res.status(422).json({ error_code: "duplicate" });
       }
-      return res.status(400).json({ error_code: "failed" });
-    }
-  } else if (req.method === "GET") {
-    try {
-      const result = await prisma.player.findMany({
-        where: {
-          userId: session.user?.id,
-        },
-      });
-
-      return res.status(200).json(result);
-    } catch (err) {
-      console.error(err);
-      // @ts-ignore
       return res.status(400).json({ error_code: "failed" });
     }
   } else {

@@ -39,8 +39,11 @@ export default async function handler(
     }
   } else if (req.method === "GET") {
     try {
-      // TODO: FILTER BY USER ID
-      const result = await prisma.drill.findMany();
+      const result = await prisma.drill.findMany({
+        where: {
+          userId: session.user?.id,
+        },
+      });
 
       return res.status(200).json(result);
     } catch (err) {
