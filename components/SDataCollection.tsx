@@ -1,5 +1,6 @@
+import { Drill, Player } from "@prisma/client";
 import { Session } from "next-auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NewDrillForm } from "./forms/NewDrillForm";
 import { NewPlayerForm } from "./forms/NewPlayerForm";
 import { NewStatForm } from "./forms/NewStatForm";
@@ -7,11 +8,11 @@ import { SButtonMenu } from "./SButtonMenu";
 import { SDrawer } from "./SDrawer";
 
 export function SDataCollection({ session }: { session: Session }) {
+  const [loading, setLoading] = useState(true);
   const [newPlayerOpen, setNewPlayerOpen] = useState(false);
   const [newDrillOpen, setNewDrillOpen] = useState(false);
   const [newStatOpen, setNewStatOpen] = useState(false);
   const [newSingleStatOpen, setNewSingleStatOpen] = useState(false);
-
   const menuOptions = [
     {
       value: "Add Player",
@@ -39,9 +40,39 @@ export function SDataCollection({ session }: { session: Session }) {
     },
   ];
 
+  const [drills, setDrills] = useState<Array<Drill>>([]);
+  const [players, setPlayers] = useState<Array<Player>>([]);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const [d, p] = await Promise.all([
+        fetch("/api/drill")
+          .then((d) => d.json())
+          .then((r) => r)
+          .catch((err) => console.error(err)),
+        fetch("/api/player")
+          .then((d) => d.json())
+          .then((r) => r)
+          .catch((err) => console.error(err)),
+      ]);
+
+      console.log({ d });
+      console.log({ p });
+
+      setDrills(d);
+      setPlayers(p);
+      setLoading(false);
+    })();
+  }, []);
+
   return (
     <>
-      <SButtonMenu title="Add New" options={menuOptions} />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <SButtonMenu title="Add New" options={menuOptions} />
+      )}
 
       <SDrawer opened={newPlayerOpen} setOpened={setNewPlayerOpen}>
         <NewPlayerForm
@@ -65,8 +96,13 @@ export function SDataCollection({ session }: { session: Session }) {
 
       <SDrawer opened={newStatOpen} setOpened={setNewStatOpen}>
         <NewStatForm
-          availableDrills={["stanford", "steph"]}
-          availablePlayers={["me"]}
+          availableDrills={drills.map((drill) => drill.name)}
+          availablePlayers={players.map((player) => player.name)}
+          afterSubmitSuccess={(s) => {
+            console.log({ s });
+            setNewStatOpen(false);
+          }}
+          session={session}
         />
       </SDrawer>
       <SDrawer opened={newSingleStatOpen} setOpened={setNewSingleStatOpen}>

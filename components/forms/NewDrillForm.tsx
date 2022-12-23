@@ -27,8 +27,6 @@ export function NewDrillForm({
       method: "POST",
       body: JSON.stringify({
         name,
-        // @ts-ignore
-        userId: session.user?.id,
       }),
     })
       .then((d) => d.json())

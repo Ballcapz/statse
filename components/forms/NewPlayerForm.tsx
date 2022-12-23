@@ -33,8 +33,6 @@ export function NewPlayerForm({
       body: JSON.stringify({
         name,
         number,
-        // @ts-ignore
-        userId: session.user?.id,
       }),
     })
       .then((d) => d.json())

@@ -1,23 +1,32 @@
 import { Box, Button, Group, Select, TextInput, Title } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, UseFormReturnType } from "@mantine/form";
+import { Stat } from "@prisma/client";
+import { Session } from "next-auth";
+import { useState } from "react";
+import { SDropdown } from "../SDropdown";
 
 type NewStatFormProps = {
   availableDrills: Array<string>;
   availablePlayers: Array<string>;
+  afterSubmitSuccess: (s: Stat) => void;
+  session: Session;
 };
 
 export function NewStatForm({
   availableDrills,
   availablePlayers,
+  afterSubmitSuccess,
+  session,
 }: NewStatFormProps) {
+  const [selectedDrill, setSelectedDrill] = useState("");
+  const [selectedPlayer, setSelectedPlayer] = useState("");
+
   const form = useForm({
     initialValues: {
       leftMakes: "",
       leftTakes: "",
       rightMakes: "",
       rightTakes: "",
-      drill: "",
-      player: "",
     },
 
     validate: {
@@ -25,23 +34,64 @@ export function NewStatForm({
       leftTakes: (value) => (value.length ? null : "Please enter left takes"),
       rightMakes: (value) => (value.length ? null : "Please enter right makes"),
       rightTakes: (value) => (value.length ? null : "Please enter right takes"),
-      drill: (value) => (value.length ? null : "Please enter a drill"),
-      player: (value) => (value.length ? null : "Please enter a player"),
     },
   });
 
+  async function createStat(
+    leftMakes: string,
+    leftTakes: string,
+    rightMakes: string,
+    rightTakes: string,
+    drill: string,
+    player: string
+  ) {
+    fetch("/api/stat/both", {
+      method: "POST",
+      body: JSON.stringify({
+        leftMakes,
+        leftTakes,
+        rightMakes,
+        rightTakes,
+        drillName: drill,
+        playerName: player,
+      }),
+    })
+      .then((d) => d.json())
+      .then((r) => {
+        if (r.error_code) {
+          return;
+        } else {
+          afterSubmitSuccess(r);
+        }
+      })
+      .catch((e) => console.error("error", e));
+  }
+
   return (
     <Box sx={{ maxWidth: 300 }} mx="auto">
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form
+        onSubmit={form.onSubmit(async (values) => {
+          await createStat(
+            values.leftMakes,
+            values.leftTakes,
+            values.rightMakes,
+            values.rightTakes,
+            selectedDrill,
+            selectedPlayer
+          );
+        })}
+      >
         <Select
-          label="Drill"
           data={availableDrills}
-          {...form.getInputProps("drill")}
+          label="Drill"
+          value={selectedDrill}
+          onChange={(value: string) => setSelectedDrill(value)}
         />
         <Select
           label="Player"
           data={availablePlayers}
-          {...form.getInputProps("player")}
+          value={selectedPlayer}
+          onChange={(value: string) => setSelectedPlayer(value)}
         />
 
         <TextInput label="Left makes" {...form.getInputProps("leftMakes")} />
