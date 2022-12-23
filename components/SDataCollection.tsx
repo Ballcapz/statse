@@ -1,3 +1,4 @@
+import { Session } from "next-auth";
 import { useState } from "react";
 import { NewDrillForm } from "./forms/NewDrillForm";
 import { NewPlayerForm } from "./forms/NewPlayerForm";
@@ -5,7 +6,7 @@ import { NewStatForm } from "./forms/NewStatForm";
 import { SButtonMenu } from "./SButtonMenu";
 import { SDrawer } from "./SDrawer";
 
-export function SDataCollection() {
+export function SDataCollection({ session }: { session: Session }) {
   const [newPlayerOpen, setNewPlayerOpen] = useState(false);
   const [newDrillOpen, setNewDrillOpen] = useState(false);
   const [newStatOpen, setNewStatOpen] = useState(false);
@@ -43,11 +44,23 @@ export function SDataCollection() {
       <SButtonMenu title="Add New" options={menuOptions} />
 
       <SDrawer opened={newPlayerOpen} setOpened={setNewPlayerOpen}>
-        <NewPlayerForm afterSubmitSuccess={() => null} />
+        <NewPlayerForm
+          afterSubmitSuccess={(p) => {
+            console.log({ p });
+            setNewPlayerOpen(false);
+          }}
+          session={session}
+        />
       </SDrawer>
 
       <SDrawer opened={newDrillOpen} setOpened={setNewDrillOpen}>
-        <NewDrillForm afterSubmitSuccess={() => null} />
+        <NewDrillForm
+          afterSubmitSuccess={(d) => {
+            console.log({ d });
+            setNewDrillOpen(false);
+          }}
+          session={session}
+        />
       </SDrawer>
 
       <SDrawer opened={newStatOpen} setOpened={setNewStatOpen}>
