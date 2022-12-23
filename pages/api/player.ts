@@ -17,8 +17,6 @@ export default async function handler(
     return res.status(401);
   }
 
-  console.log({ session });
-
   if (req.method === "POST") {
     const body = JSON.parse(req.body);
 

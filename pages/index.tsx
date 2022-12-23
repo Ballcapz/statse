@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Button } from "@mantine/core";
+import { Button, Container, Flex, Stack, Title } from "@mantine/core";
 import { SDropdown } from "../components/SDropdown";
 import { STextInput } from "../components/STextInput";
 import { SButtonMenu } from "../components/SButtonMenu";
@@ -20,24 +20,29 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main style={{ height: "100vh", padding: "0 10px" }}>
-          <header>
+        <Container pt={10}>
+          <Flex
+            gap="md"
+            justify="center"
+            align="center"
+            direction="row"
+            wrap="wrap"
+          >
             <Button onClick={() => signOut()} variant="filled">
               Sign out
             </Button>
-          </header>
+          </Flex>
 
-          <SDropdown
-            label="player"
-            options={["one", "two"]}
-            setValue={(v) => null}
-            value={"one"}
-          />
-
-          <STextInput label="hi" setValue={(v) => null} value={""} />
-
-          <SDataCollection session={session} />
-        </main>
+          <Stack
+            align="center"
+            mt={24}
+            spacing="xl"
+            sx={{ borderTop: "1px solid black" }}
+          >
+            <Title order={1}>Stats E</Title>
+            <SDataCollection session={session} />
+          </Stack>
+        </Container>
       </>
     );
   }
@@ -51,9 +56,9 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main style={{ height: "100vh" }}>
+        <Container>
           <Button onClick={() => signIn()}>Sign In</Button>
-        </main>
+        </Container>
       </>
     );
   }
