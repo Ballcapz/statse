@@ -4,14 +4,10 @@ import { Player } from "@prisma/client";
 import { Session } from "next-auth";
 
 type NewPlayerFormProps = {
-  session: Session;
   afterSubmitSuccess: (p: Player) => void;
 };
 
-export function NewPlayerForm({
-  session,
-  afterSubmitSuccess,
-}: NewPlayerFormProps) {
+export function NewPlayerForm({ afterSubmitSuccess }: NewPlayerFormProps) {
   const form = useForm({
     initialValues: {
       name: "",

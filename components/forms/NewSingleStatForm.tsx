@@ -8,14 +8,12 @@ type NewStatFormProps = {
   availableDrills: Array<string>;
   availablePlayers: Array<string>;
   afterSubmitSuccess: (s: Stat) => void;
-  session: Session;
 };
 
 export function NewSingleStatForm({
   availableDrills,
   availablePlayers,
   afterSubmitSuccess,
-  session,
 }: NewStatFormProps) {
   const [selectedDrill, setSelectedDrill] = useState("");
   const [selectedPlayer, setSelectedPlayer] = useState("");

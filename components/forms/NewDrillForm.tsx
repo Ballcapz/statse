@@ -5,13 +5,9 @@ import { Session } from "next-auth";
 
 type NewDrillFormProps = {
   afterSubmitSuccess: (d: Drill) => void;
-  session: Session;
 };
 
-export function NewDrillForm({
-  session,
-  afterSubmitSuccess,
-}: NewDrillFormProps) {
+export function NewDrillForm({ afterSubmitSuccess }: NewDrillFormProps) {
   const form = useForm({
     initialValues: {
       name: "",

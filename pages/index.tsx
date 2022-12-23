@@ -43,7 +43,7 @@ export default function Home() {
             sx={{ borderTop: "1px solid black" }}
           >
             <Title order={1}>Stats E</Title>
-            <SDataCollection session={session} />
+            <SDataCollection />
           </Stack>
         </Container>
       </>

@@ -1,5 +1,4 @@
 import { Drill, Player } from "@prisma/client";
-import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import { NewDrillForm } from "./forms/NewDrillForm";
 import { NewPlayerForm } from "./forms/NewPlayerForm";
@@ -8,7 +7,7 @@ import { NewStatForm } from "./forms/NewStatForm";
 import { SButtonMenu } from "./SButtonMenu";
 import { SDrawer } from "./SDrawer";
 
-export function SDataCollection({ session }: { session: Session }) {
+export function SDataCollection() {
   const [loading, setLoading] = useState(true);
   const [newPlayerOpen, setNewPlayerOpen] = useState(false);
   const [newDrillOpen, setNewDrillOpen] = useState(false);
@@ -82,7 +81,6 @@ export function SDataCollection({ session }: { session: Session }) {
             setPlayers((prev) => [...prev, p]);
             setNewPlayerOpen(false);
           }}
-          session={session}
         />
       </SDrawer>
 
@@ -93,7 +91,6 @@ export function SDataCollection({ session }: { session: Session }) {
             setDrills((prev) => [...prev, d]);
             setNewDrillOpen(false);
           }}
-          session={session}
         />
       </SDrawer>
 
@@ -105,7 +102,6 @@ export function SDataCollection({ session }: { session: Session }) {
             console.log({ s });
             setNewStatOpen(false);
           }}
-          session={session}
         />
       </SDrawer>
       <SDrawer opened={newSingleStatOpen} setOpened={setNewSingleStatOpen}>
@@ -116,7 +112,6 @@ export function SDataCollection({ session }: { session: Session }) {
             console.log({ s });
             setNewSingleStatOpen(false);
           }}
-          session={session}
         />
       </SDrawer>
     </>

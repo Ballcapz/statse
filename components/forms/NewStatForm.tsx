@@ -1,22 +1,18 @@
 import { Box, Button, Group, Select, TextInput, Title } from "@mantine/core";
-import { useForm, UseFormReturnType } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { Stat } from "@prisma/client";
-import { Session } from "next-auth";
 import { useState } from "react";
-import { SDropdown } from "../SDropdown";
 
 type NewStatFormProps = {
   availableDrills: Array<string>;
   availablePlayers: Array<string>;
   afterSubmitSuccess: (s: Stat) => void;
-  session: Session;
 };
 
 export function NewStatForm({
   availableDrills,
   availablePlayers,
   afterSubmitSuccess,
-  session,
 }: NewStatFormProps) {
   const [selectedDrill, setSelectedDrill] = useState("");
   const [selectedPlayer, setSelectedPlayer] = useState("");
