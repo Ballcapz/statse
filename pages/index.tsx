@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Button, Center, Container, Flex, Stack, Title } from "@mantine/core";
 import { SDataCollection } from "../components/SDataCollection";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -44,6 +45,17 @@ export default function Home() {
           >
             <Title order={1}>Stats E</Title>
             <SDataCollection />
+            <Link
+              href={"/stats"}
+              style={{
+                border: "1px solid green",
+                borderRadius: "4px",
+                padding: "12px",
+                outline: "none",
+              }}
+            >
+              See Stats
+            </Link>
           </Stack>
         </Container>
       </>
