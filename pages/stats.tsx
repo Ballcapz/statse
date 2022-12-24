@@ -76,7 +76,9 @@ export default function Stats() {
       >
         Home
       </Link>
-      <a href="/api/stat/download">Download all stats</a>
+      <a href="/api/stat/download" download={true}>
+        Download all stats
+      </a>
       <SDropdown
         label="Show Stats For Drill"
         options={Object.keys(drills)}
