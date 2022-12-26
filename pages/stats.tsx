@@ -65,20 +65,37 @@ export default function Stats() {
 
   return (
     <Container sx={{ minHeight: "90vh" }} pt={20}>
-      <Link
-        href={"/"}
-        style={{
-          border: "1px solid green",
-          borderRadius: "4px",
-          padding: "12px",
-          outline: "none",
-        }}
+      <Flex
+        gap="md"
+        justify="space-between"
+        align="center"
+        direction="row"
+        wrap="wrap"
       >
-        Home
-      </Link>
-      <a href="/api/stat/download" download={true}>
-        Download all stats
-      </a>
+        <Link
+          href={"/"}
+          style={{
+            border: "1px solid green",
+            borderRadius: "4px",
+            padding: "12px",
+            outline: "none",
+          }}
+        >
+          Home
+        </Link>
+        <Link
+          href="/api/stat/download"
+          download={true}
+          style={{
+            border: "1px solid green",
+            borderRadius: "4px",
+            padding: "12px",
+            outline: "none",
+          }}
+        >
+          Download all stats
+        </Link>
+      </Flex>
       <SDropdown
         label="Show Stats For Drill"
         options={Object.keys(drills)}
@@ -113,12 +130,15 @@ export default function Stats() {
             key={stat.id}
           >
             <span>{stat.playerName}</span>
-            <span>{stat.leftMakes ?? "-"}</span>
-            <span>{stat.leftTakes ?? "-"}</span>
-            <span>{stat.rightMakes ?? "-"}</span>
-            <span>{stat.rightTakes ?? "-"}</span>
-            <span>{stat.singleMakes ?? "-"}</span>
-            <span>{stat.singleTakes ?? "-"}</span>
+            <span>
+              L: {stat.leftMakes ?? "-"} / {stat.leftTakes ?? "-"}
+            </span>
+            <span>
+              R: {stat.rightMakes ?? "-"} / {stat.rightTakes ?? "-"}
+            </span>
+            <span>
+              S: {stat.singleMakes ?? "-"} / {stat.singleTakes ?? "-"}
+            </span>
           </Flex>
         ))}
     </Container>
