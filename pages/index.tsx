@@ -4,6 +4,7 @@ import { SDataCollection } from "../components/SDataCollection";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Header } from "../components/Header";
+import { SFileUpload } from "../components/SFileUpload";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -40,6 +41,9 @@ export default function Home() {
             >
               See Stats
             </Link>
+
+            <SFileUpload importType="player" />
+            <SFileUpload importType="drill" />
           </Stack>
         </Container>
       </>
